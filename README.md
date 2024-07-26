@@ -97,6 +97,12 @@ echo 'This sentence is spoken first. This sentence is synthesized while the firs
   ./piper --model en_US-lessac-medium.onnx --output-raw | \
   aplay -r 22050 -f S16_LE -t raw -
 ```
+Stream raw audio for Windows 10 x64
+``` sh
+echo 'This sentence is spoken first. This sentence is synthesized while the first sentence is spoken.' | \
+  ./piper.exe --model en_US-lessac-medium.onnx --output-raw | \
+  ffplay -nodisp - -f s16le -ar 22050 -autoexit
+```
 
 This is **raw** audio and not a WAV file, so make sure your audio player is set to play 16-bit mono PCM samples at the correct sample rate for the voice.
 
