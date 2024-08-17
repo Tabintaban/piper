@@ -186,7 +186,7 @@ If you'd like to use a GPU, install the `onnxruntime-gpu` package:
 
 and then run `piper` with the `--cuda` argument. You will need to have a functioning CUDA environment, such as what's available in [NVIDIA's PyTorch containers](https://catalog.ngc.nvidia.com/orgs/nvidia/containers/pytorch).
 
-## звуковой поток напрямую на колонки через плеер ffplay
+## Звуковой поток напрямую на колонки через плеер ffplay
 ```sh
 echo "This is the test audio." | .\piper.exe --model en_US-lessac-low.onnx --output-raw | ffplay -nodisp - -f s16le -ar 22050 -autoexit
 ```
@@ -196,3 +196,42 @@ echo "Привет" | .\piper.exe --model ru_RU-ruslan-medium.onnx --output-raw 
 ```sh
 cat demo.txt | .\piper.exe --model ru_RU-ruslan-medium.onnx --output-raw | ffplay -nodisp - -f s16le -ar 22050 -autoexit
 ```
+cat demo.txt - берет буквы из файла demo.txt
+.\piper.exe - используя модель опреобразует буквы в речь отправляет его
+командой --output-raw на проигрыватель
+ffplay - приняв сырой звуковой поток (raw) форматирует его в s16le и
+проигрывает его через колонки
+
+-nodisp -без окна проигрывателя
+-ar 22050 -скорость воспроизведения
+-autoexit -закрытие окна проигрывателя
+-f s16le -формат файла, использовать только его, все остальные шипят.
+
+Необработанный звук в FFmpeg может принимать несколько разных «форм», то есть форматов сэмплов. Например:
+s -означает «подписанный» (для целочисленных представлений), u будет означать «беззнаковый»
+16 -означает 16 бит на выборку.
+le -означает кодирование с прямым порядком байтов для образцов
+
+Вы можете увидеть список поддерживаемых форматов примеров, проверив вывод ffmpeg -formats:
+https://trac.ffmpeg.org/wiki/audio%20types
+$ ffmpeg-форматы | grep ПКМ
+DE alaw PCM A-закон
+DE f32be PCM 32-битные числа с плавающей запятой, обратный порядок байтов
+DE f32le PCM 32-битная с плавающей запятой, прямой порядок байтов
+DE f64be PCM 64-битная с плавающей запятой, обратный порядок байтов
+DE f64le PCM 64-битная с плавающей запятой, прямой порядок байтов
+DE Law PCM Law-Law
+DE s16be PCM подписанный 16-битный порядок байтов с прямым порядком байтов
+DE s16le PCM подписан 16-битным прямым порядком байтов
+DE s24be PCM подписанный 24-битный порядок байтов с прямым порядком байтов
+DE s24le PCM подписанный 24-битный прямой порядок байтов
+DE s32be PCM подписанный 32-битный формат с прямым порядком байтов
+DE s32le PCM подписанный 32-битный формат с прямым порядком байтов
+DE s8 PCM подписанный 8-битный
+DE u16be PCM беззнаковый 16-битный с прямым порядком байтов
+DE u16le PCM беззнаковый 16-битный порядок байтов с прямым порядком байтов
+DE u24be PCM беззнаковый 24-битный с прямым порядком байтов
+DE u24le PCM беззнаковый 24-битный с прямым порядком байтов
+DE u32be PCM беззнаковый 32-битный с прямым порядком байтов
+DE u32le PCM 32-битный без знака с прямым порядком байтов
+DE u8 PCM беззнаковый 8-битный
