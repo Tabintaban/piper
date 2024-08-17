@@ -178,8 +178,21 @@ If you'd like to use a GPU, install the `onnxruntime-gpu` package:
 
 
 ``` sh
+
+
+
 .venv/bin/pip3 install onnxruntime-gpu
 ```
 
 and then run `piper` with the `--cuda` argument. You will need to have a functioning CUDA environment, such as what's available in [NVIDIA's PyTorch containers](https://catalog.ngc.nvidia.com/orgs/nvidia/containers/pytorch).
 
+## звуковой поток напрямую на колонки через плеер ffplay
+```sh
+echo "This is the test audio." | .\piper.exe --model en_US-lessac-low.onnx --output-raw | ffplay -nodisp - -f s16le -ar 22050 -autoexit
+```
+```sh
+echo "Привет" | .\piper.exe --model ru_RU-ruslan-medium.onnx --output-raw | ffplay -nodisp - -f s16le -ar 22050 -autoexit
+```
+```sh
+cat demo.txt | .\piper.exe --model ru_RU-ruslan-medium.onnx --output-raw | ffplay -nodisp - -f s16le -ar 22050 -autoexit
+```
